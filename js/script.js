@@ -133,6 +133,32 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
   );
 }
 
+function determineWinner({ player, enemy, timerId }) {
+  clearTimeout(timerId);
+  document.querySelector("#displayText").style.display = "flex";
+  if (player.health === enemy.health) {
+    document.querySelector("#displayText").innerHTML = "DIE";
+  } else if (player.health > enemy.health) {
+    document.querySelector("#displayText").innerHTML = "Player 1 Wins";
+  } else if (player.health < enemy.health) {
+    document.querySelector("#displayText").innerHTML = "Player 2 Wins";
+  }
+}
+
+let timer = 60;
+let timerId;
+function decreaseTimer() {
+  if (timer > 0) {
+    timerId = setTimeout(decreaseTimer, 1000);
+    timer--;
+    document.querySelector("#timer").innerHTML = timer;
+  }
+  if (timer === 0) {
+    determineWinner({ player, enemy, timerId });
+  }
+}
+decreaseTimer();
+
 // loop animacao
 function animate() {
   window.requestAnimationFrame(animate);
@@ -181,6 +207,11 @@ function animate() {
     // console.log("enemy attack successful");
     player.health -= 20;
     document.querySelector("#playerHealth").style.width = player.health + "%";
+  }
+
+  // end game based on health
+  if (player.health <= 0 || enemy.health <= 0) {
+    determineWinner({ player, enemy });
   }
 }
 animate();
@@ -238,6 +269,10 @@ window.addEventListener("keyup", (event) => {
       break;
     case "ArrowLeft":
       keys.ArrowLeft.pressed = false;
+      break;
+    case "ArrowDown":
+      enemy.isAttacking = false;
+      // enemy.attack();
       break;
   }
 });
