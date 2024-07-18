@@ -29,6 +29,7 @@ class Sprite {
     };
     this.color = color;
     this.isAttacking;
+    this.health = 100;
   }
 
   draw() {
@@ -51,7 +52,7 @@ class Sprite {
     // posicao inicial attackBox
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
-    // posicao inicial 'spriet'
+    // posicao inicial 'sprite'
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
@@ -164,7 +165,9 @@ function animate() {
     player.isAttacking
   ) {
     player.isAttacking = false;
-    console.log("go");
+    // console.log("go");
+    enemy.health -= 20;
+    document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
   // enemy colisao
   if (
@@ -175,7 +178,9 @@ function animate() {
     enemy.isAttacking
   ) {
     enemy.isAttacking = false;
-    console.log("enemy attack successful");
+    // console.log("enemy attack successful");
+    player.health -= 20;
+    document.querySelector("#playerHealth").style.width = player.health + "%";
   }
 }
 animate();
