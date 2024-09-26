@@ -70,6 +70,14 @@ const player = new Fighter({
       imageSrc: "./img/samuraiMack/Attack1.png",
       framesMax: 6,
     },
+    attackBox: {
+      offset: {
+        x: 100,
+        y: 50,
+      },
+      width: 160,
+      height: 50,
+    },
   },
 });
 
@@ -115,6 +123,14 @@ const enemy = new Fighter({
     attack1: {
       imageSrc: "./img/kenji/Attack1.png",
       framesMax: 4,
+    },
+    attackBox: {
+      offset: {
+        x: -170,
+        y: 50,
+      },
+      width: 170,
+      height: 50,
     },
   },
 });
@@ -187,12 +203,17 @@ function animate() {
       rectangle1: player,
       rectangle2: enemy,
     }) &&
-    player.isAttacking
+    player.isAttacking &&
+    player.framesCurrent === 4
   ) {
     player.isAttacking = false;
     // console.log("go");
     enemy.health -= 20;
     document.querySelector("#enemyHealth").style.width = enemy.health + "%";
+  }
+  // se player errar
+  if (player.isAttacking && player.framesCurrent === 4) {
+    player.isAttacking = false;
   }
   // enemy colisao
   if (
@@ -200,12 +221,17 @@ function animate() {
       rectangle1: enemy,
       rectangle2: player,
     }) &&
-    enemy.isAttacking
+    enemy.isAttacking &&
+    enemy.framesCurrent === 2
   ) {
     enemy.isAttacking = false;
     // console.log("enemy attack successful");
     player.health -= 20;
     document.querySelector("#playerHealth").style.width = player.health + "%";
+  }
+  // se o enemy errar
+  if (enemy.isAttacking && enemy.framesCurrent === 2) {
+    enemy.isAttacking = false;
   }
 
   // end game based on health
