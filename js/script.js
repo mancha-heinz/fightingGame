@@ -175,8 +175,10 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
   shop.update();
+  c.fillStyle = "rgba(255, 255, 255, 0.15)";
+  c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
-  // enemy.update();
+  enemy.update();
 
   player.velocity.x = 0;
   enemy.velocity.x = 0;
@@ -224,9 +226,10 @@ function animate() {
   ) {
     enemy.takeHit();
     player.isAttacking = false;
-    // console.log("go");
     enemy.health -= 20;
-    document.querySelector("#enemyHealth").style.width = enemy.health + "%";
+    gsap.to("#enemyHealth", {
+      width: enemy.health + "%",
+    });
   }
   // se player errar
   if (player.isAttacking && player.framesCurrent === 4) {
@@ -245,7 +248,9 @@ function animate() {
     enemy.isAttacking = false;
     // console.log("enemy attack successful");
     player.health -= 20;
-    document.querySelector("#playerHealth").style.width = player.health + "%";
+    gsap.to("#playerHealth", {
+      width: player.health + "%",
+    });
   }
   // se o enemy errar
   if (enemy.isAttacking && enemy.framesCurrent === 2) {
